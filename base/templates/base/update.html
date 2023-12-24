@@ -1,0 +1,55 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}{{ book.title }}{% endblock %}
+{% block content %}
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4>Update Book</h4>
+            <a href="{% url 'index' %}" class="btn btn-secondary">Back</a>
+        </div>
+        <div>
+            <h4>Book Update Form</h4>
+            <form enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                <div class="form-group mb-3">
+                    <label for="title">Book Title</label>
+                    <input type="text" name="title" id="title" class="form-control" placeholder="Book Title" value="{{ book.title }}">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="price">Price</label>
+                    <input type="number" name="price" id="price" class="form-control" placeholder="Price" value="{{ book.price }}">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="publish_date">Publish Date</label>
+                    <input type="date" name="publish_date" id="publish_date" class="form-control" placeholder="Publish Date" value="{{ book.publish_date|date:'Y-m-d' }}">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="is_available">Status</label>
+                    <select name="is_available" id="is_available" class="form-control">
+                        <option value="1" {% if book.is_available %}
+                        	selected
+                        {% endif %} >Available</option>
+                        <option value="0" {% if not book.is_available %}
+                        	selected
+                        {% endif %}>Not Available</option>
+                    </select>
+                </div>
+                <div class="form-group mb-3">
+                    <div class="mb-2">
+                        <img src=
+                             {% if book.cover %}{{ book.cover.url }}{% else %}{% static 'assets/images/placeholder-image.png' %}{% endif %} alt={{ book.title }}
+                     width="300px" height="auto">
+                    </div>
+                    <label for="cover">Cover</label>
+                    <input type="file" name="cover" id="cover" class="form-control" placeholder="Cover">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="description">Description</label>
+                    <textarea name="description" id="description" cols="30" rows="5" class="form-control" placeholder="Description">{{ book.description }}</textarea>
+                </div>
+                <input type="submit" value="Update Book" class="btn btn-primary">
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base/main.html' %}
+{% block title %}Book List{% endblock %}
+{% block content %}
+    <div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4>All Books [{{ books.count }}]</h4>
+        <a href="{% url 'create_book' %}" class="btn btn-primary">Create</a>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Price</th>
+            <th scope="col">Publish Date</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for book in books %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ book.title }}</td>
+                <td>{{ book.price }}</td>
+                <td>{{ book.publish_date }}</td>
+                <td>{% if book.is_available %}Available{% else %}Not Available{% endif %} </td>
+                <td>
+                    <a href="{% url 'book_detail' book.id %}" class="btn btn-primary btn-sm">Detail</a>
+                    <a href="{% url 'update_book' book.id %}" class="btn btn-warning btn-sm">Update</a>
+                    <a href="{% url 'delete_book' book.id %}" class="btn btn-danger btn-sm">Delete</a>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+{% endblock %}
